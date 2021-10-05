@@ -12,6 +12,8 @@
 #
 import os
 import sys
+import re
+from pathlib import Path
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 # -- Project information -----------------------------------------------------
@@ -19,8 +21,17 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 project = 'tldr'
 copyright = '2014, Felix Yan'
 author = 'Felix Yan'
-from tldr import __version__
-release = __version__
+
+_setup_dir = Path(__file__).resolve().parent.parent
+_version = re.search(
+    r'__version__ = "(.*)"',
+    Path(_setup_dir, 'tldr.py').open().read()
+)
+if _version is None:
+    raise SystemExit("Could not determine version to use")
+
+_version = _version.group(1)
+release = _version
 
 # -- General configuration ---------------------------------------------------
 
